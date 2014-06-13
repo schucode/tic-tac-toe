@@ -25,10 +25,15 @@ var checkForWinner = function () {
   // that if three spaces in a row are the same, all three spaces are
   // marked by a player, and not all empty.
 
-  if ( spaces[0] === spaces[1] && spaces[1] === spaces[2]
-    || spaces[3] === spaces[4] && spaces[4] === spaces[5]
-    || spaces[6] === spaces[7] && spaces[7] === spaces[8]
+  if ( spaces[0] === spaces[1] && spaces[1] === spaces[2] //top-across
+    || spaces[3] === spaces[4] && spaces[4] === spaces[5] //middle-across
+    || spaces[6] === spaces[7] && spaces[7] === spaces[8] //bottom-across
     // TODO: Check for rest of game winning cases
+    || spaces[0] === spaces[3] && spaces[3] === spaces[6] //left down
+    || spaces[1] === spaces[4] && spaces[4] === spaces[7] //middle down
+    || spaces[2] === spaces[5] && spaces[5] === spaces[8] //right down
+    || spaces[0] === spaces[4] && spaces[4] === spaces[8] //diagonal
+    || spaces[6] === spaces[4] && spaces[4] === spaces[2] //diagonal
   )
   {
     console.log('somebody won');
@@ -78,7 +83,7 @@ setNextTurn();
   line 35
     trigger a game-win event and pass the winning player as event data
 
-  checkForWinner function
+X  checkForWinner function
     game only checks for three-in-a-row from left to right. 
     finish function to cover all eight win cases
 
