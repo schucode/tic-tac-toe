@@ -82,7 +82,7 @@ setNextTurn();
     game only checks for three-in-a-row from left to right. 
     finish function to cover all eight win cases
 
-  update #board .space
+X  update #board .space
     a player can write over another player's entry because the 
     game doesn't check to see if the space is filled out.
     update #board .spcae click handler to check is space is free
