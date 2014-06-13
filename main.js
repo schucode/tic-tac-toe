@@ -9,15 +9,18 @@ var spaces = [
 var player1 = 'veggies';
 var player2 = 'junkfood';
 var currentPlayer = null;
+var keep_playing = true;
 
 var setNextTurn = function () {
-  if (currentPlayer === player1) {
-    currentPlayer = player2;
+  if (keep_playing == true) {
+    if (currentPlayer === player1) {
+      currentPlayer = player2;
+    }
+    else {
+      currentPlayer = player1;
+    }
+    $('#turn-label').text(currentPlayer);
   }
-  else {
-    currentPlayer = player1;
-  }
-  $('#turn-label').text(currentPlayer);
 };
 
 var checkForWinner = function () {
@@ -36,32 +39,33 @@ var checkForWinner = function () {
     || spaces[6] === spaces[4] && spaces[4] === spaces[2] //diagonal
   )
   {
-    console.log('somebody won');
+    console.log('somebody won: ' + currentPlayer );
     // TODO: Trigger 'game-win' event with the winning player as the event data
+    keep_playing = false
+    $(document).trigger('game-win', currentPlayer);
   }
 };
 
 $(document).on('click', '#board .space', function (e) {
-  var spaceNum = $(e.currentTarget).index();
-  console.log('You clicked on space #' + spaceNum);
+  if (keep_playing ) {
+    var spaceNum = $(e.currentTarget).index();
+    console.log('You clicked on space #' + spaceNum);
 
-  // Marks the space with the current player's name
-  // TODO: Don't mark it unless the space is blank
-  
-  if (spaces[spaceNum] == 'veggies' || spaces[spaceNum] == 'junkfood') {
-    alert("Yo, that is not a blank space!!!");
-  } else {
-  spaces[spaceNum] = currentPlayer;
-  // Adds a class to elem so css can take care of the visuals
-  $('#board .space:eq(' + spaceNum + ')').addClass(currentPlayer);
+    if (spaces[spaceNum] == 'veggies' || spaces[spaceNum] == 'junkfood') {
+      alert("Yo, that is not a blank space!!!");
+    } else {
+      spaces[spaceNum] = currentPlayer;
+      // Adds a class to elem so css can take care of the visuals
+      $('#board .space:eq(' + spaceNum + ')').addClass(currentPlayer);
 
-  checkForWinner();
-  setNextTurn();
+      checkForWinner();
+      setNextTurn();
   }
+}
 });
 
 $(document).on('game-win', function (e, winner) {
-  // TODO: Alert who won the game
+  alert(winner);
 });
 
 // Start the game
@@ -78,10 +82,10 @@ setNextTurn();
 
   line 53 - 
     winner is a string. 
-    complete function by alerting the given winner
+X    complete function by alerting the given winner
 
   line 35
-    trigger a game-win event and pass the winning player as event data
+X    trigger a game-win event and pass the winning player as event data
 
 X  checkForWinner function
     game only checks for three-in-a-row from left to right. 
@@ -94,11 +98,12 @@ X  update #board .space
     before filling in.
     if not free, tell the player ( NaN is falsy, fyi)
 
-  stop game when someone wins
+X stop game when someone wins
 
   EXTENSIONS
 
   button to start game & track wins/losses
+  
   add animation upon win
   allow players to set their names
   allow for players to set player avaat
